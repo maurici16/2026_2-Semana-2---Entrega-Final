@@ -1,1104 +1,1070 @@
-
 <!DOCTYPE html>
 <html lang="pt-BR">
 
 <head>
 
-<meta charset="UTF-8">
-
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-<title>Jogo Educacional - Pré-Escola II</title>
-
-<style>
-
-* {
-    box-sizing: border-box;
-}
-
-html,
-body {
-    margin: 0;
-    padding: 0;
-    min-height: 100%;
-}
-
-body {
-    font-family: Arial, sans-serif;
-    background: #e8f4ff;
-    color: #333;
-}
-
-.tela {
-    min-height: 100vh;
-    min-height: 100dvh;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    padding: 20px;
-}
-
-.escondido {
-    display: none !important;
-}
-
-.cartao {
-    background: white;
-    width: 100%;
-    max-width: 700px;
-    padding: 40px;
-    border-radius: 25px;
-    text-align: center;
-    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.10);
-}
-
-h1 {
-    font-size: clamp(30px, 6vw, 44px);
-    margin: 0 0 15px;
-}
-
-h2 {
-    font-size: clamp(23px, 5vw, 32px);
-    margin: 0 0 25px;
-}
-
-h3 {
-    font-size: 21px;
-}
-
-p {
-    font-size: clamp(17px, 3vw, 20px);
-    line-height: 1.5;
-}
-
-.alunos {
-    margin: 25px 0;
-    padding: 15px;
-    background: #f4f8ff;
-    border-radius: 15px;
-}
-
-.alunos p {
-    margin: 9px 0;
-    font-size: clamp(14px, 2.5vw, 17px);
-}
-
-button {
-    width: 100%;
-    max-width: 450px;
-    min-height: 55px;
-    padding: 14px 18px;
-    margin: 10px auto;
-    display: block;
-    border: none;
-    border-radius: 15px;
-    background: #d9d9d9;
-    font-size: clamp(17px, 3vw, 20px);
-    font-weight: bold;
-    cursor: pointer;
-    transition: transform 0.15s, background 0.15s;
-    -webkit-tap-highlight-color: transparent;
-}
-
-button:hover {
-    transform: scale(1.02);
-}
-
-button:active {
-    transform: scale(0.98);
-}
-
-.jogar {
-    background: #7ed957;
-    color: white;
-}
-
-.facil {
-    background: #9be58c;
-    color: #155d0d;
-}
-
-.medio {
-    background: #ffd966;
-    color: #6b5200;
-}
-
-.dificil {
-    background: #ff8b8b;
-    color: #6b1111;
-}
-
-.voltar {
-    background: #eeeeee;
-    color: #555;
-}
-
-.numero {
-    font-weight: bold;
-    color: #777;
-    margin-bottom: 25px;
-}
-
-#pergunta {
-    white-space: pre-line;
-    line-height: 1.5;
-    overflow-wrap: break-word;
-    word-wrap: break-word;
-}
-
-#alternativas {
-    width: 100%;
-}
-
-#alternativas button {
-    background: #f1f5f9;
-    text-align: left;
-    border: 2px solid #e0e0e0;
-    max-width: 100%;
-    white-space: normal;
-    overflow-wrap: break-word;
-    word-wrap: break-word;
-}
-
-#alternativas button:hover {
-    background: #e5eef8;
-}
-
-.correta {
-    background: #8ee58a !important;
-    border-color: #4caf50 !important;
-}
-
-.errada {
-    background: #ff9b9b !important;
-    border-color: #e53935 !important;
-}
-
-#feedback {
-    min-height: 30px;
-    font-weight: bold;
-    font-size: clamp(17px, 3vw, 21px);
-}
-
-.pontuacao {
-    font-size: clamp(45px, 12vw, 70px);
-    font-weight: bold;
-    margin: 25px;
-}
-
-.mensagem {
-    font-size: clamp(19px, 4vw, 25px);
-    font-weight: bold;
-    line-height: 1.4;
-}
-
-@media (max-width: 768px) {
-
-    .tela {
-        padding: 25px;
-    }
-
-    .cartao {
-        max-width: 650px;
-        padding: 35px 30px;
-    }
-
-}
-
-@media (max-width: 480px) {
-
-    .tela {
-        padding: 12px;
-    }
-
-    .cartao {
-        padding: 28px 18px;
-        border-radius: 20px;
-    }
-
-    h1 {
-        font-size: 30px;
-    }
-
-    h2 {
-        font-size: 23px;
-    }
-
-    p {
-        font-size: 17px;
-    }
-
-    .alunos {
-        padding: 12px;
-    }
-
-    .alunos p {
-        font-size: 14px;
-    }
-
-    button {
-        min-height: 58px;
-        margin: 9px auto;
-        padding: 15px;
-        font-size: 17px;
-    }
-
-    #alternativas button {
-        min-height: 58px;
-        padding: 15px;
-    }
-
-}
-
-@media (max-width: 360px) {
-
-    .tela {
-        padding: 8px;
-    }
-
-    .cartao {
-        padding: 22px 14px;
-    }
-
-    h1 {
-        font-size: 27px;
-    }
-
-    h2 {
-        font-size: 21px;
-    }
-
-    .alunos p {
-        font-size: 13px;
-    }
-
-    button {
-        font-size: 16px;
-    }
-
-}
-
-@media (max-height: 500px) and (orientation: landscape) {
-
-    .tela {
-        align-items: flex-start;
-        padding-top: 15px;
-        padding-bottom: 15px;
-    }
-
-    .cartao {
-        padding: 20px;
-    }
-
-    h1 {
-        font-size: 28px;
-    }
-
-    h2 {
-        font-size: 21px;
-    }
-
-    button {
-        min-height: 48px;
-        padding: 10px;
-        margin: 7px auto;
-    }
-
-}
-
-@media (hover: none) {
-
-    button:hover {
-        transform: none;
-    }
-
-    button:active {
-        transform: scale(0.97);
-    }
-
-}
-
-</style>
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Jogo Educacional - Pré-Escola II</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        html,
+        body {
+            margin: 0;
+            padding: 0;
+            min-height: 100%;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background: #e8f4ff;
+            color: #333;
+        }
+
+        .tela {
+            min-height: 100vh;
+            min-height: 100dvh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .escondido {
+            display: none !important;
+        }
+
+        .cartao {
+            background: white;
+            width: 100%;
+            max-width: 700px;
+            padding: 40px;
+            border-radius: 25px;
+            text-align: center;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.10);
+        }
+
+        h1 {
+            font-size: clamp(30px, 6vw, 44px);
+            margin: 0 0 15px;
+        }
+
+        h2 {
+            font-size: clamp(23px, 5vw, 32px);
+            margin: 0 0 25px;
+        }
+
+        h3 {
+            font-size: 21px;
+        }
+
+        p {
+            font-size: clamp(17px, 3vw, 20px);
+            line-height: 1.5;
+        }
+
+        .alunos {
+            margin: 25px 0;
+            padding: 15px;
+            background: #f4f8ff;
+            border-radius: 15px;
+        }
+
+        .alunos p {
+            margin: 9px 0;
+            font-size: clamp(14px, 2.5vw, 17px);
+        }
+
+        button {
+            width: 100%;
+            max-width: 450px;
+            min-height: 55px;
+            padding: 14px 18px;
+            margin: 10px auto;
+            display: block;
+            border: none;
+            border-radius: 15px;
+            background: #d9d9d9;
+            font-size: clamp(17px, 3vw, 20px);
+            font-weight: bold;
+            cursor: pointer;
+            transition: transform 0.15s, background 0.15s;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        button:hover {
+            transform: scale(1.02);
+        }
+
+        button:active {
+            transform: scale(0.98);
+        }
+
+        .jogar {
+            background: #7ed957;
+            color: white;
+        }
+
+        .facil {
+            background: #9be58c;
+            color: #155d0d;
+        }
+
+        .medio {
+            background: #ffd966;
+            color: #6b5200;
+        }
+
+        .dificil {
+            background: #ff8b8b;
+            color: #6b1111;
+        }
+
+        .voltar {
+            background: #eeeeee;
+            color: #555;
+        }
+
+        .numero {
+            font-weight: bold;
+            color: #777;
+            margin-bottom: 25px;
+        }
+
+        #pergunta {
+            white-space: pre-line;
+            line-height: 1.5;
+            overflow-wrap: break-word;
+            word-wrap: break-word;
+        }
+
+        #alternativas {
+            width: 100%;
+        }
+
+        #alternativas button {
+            background: #f1f5f9;
+            text-align: left;
+            border: 2px solid #e0e0e0;
+            max-width: 100%;
+            white-space: normal;
+            overflow-wrap: break-word;
+            word-wrap: break-word;
+        }
+
+        #alternativas button:hover {
+            background: #e5eef8;
+        }
+
+        .correta {
+            background: #8ee58a !important;
+            border-color: #4caf50 !important;
+        }
+
+        .errada {
+            background: #ff9b9b !important;
+            border-color: #e53935 !important;
+        }
+
+        #feedback {
+            min-height: 30px;
+            font-weight: bold;
+            font-size: clamp(17px, 3vw, 21px);
+        }
+
+        .pontuacao {
+            font-size: clamp(45px, 12vw, 70px);
+            font-weight: bold;
+            margin: 25px;
+        }
+
+        .mensagem {
+            font-size: clamp(19px, 4vw, 25px);
+            font-weight: bold;
+            line-height: 1.4;
+        }
+
+        @media (max-width: 768px) {
+
+            .tela {
+                padding: 25px;
+            }
+
+            .cartao {
+                max-width: 650px;
+                padding: 35px 30px;
+            }
+
+        }
+
+        @media (max-width: 480px) {
+
+            .tela {
+                padding: 12px;
+            }
+
+            .cartao {
+                padding: 28px 18px;
+                border-radius: 20px;
+            }
+
+            h1 {
+                font-size: 30px;
+            }
+
+            h2 {
+                font-size: 23px;
+            }
+
+            p {
+                font-size: 17px;
+            }
+
+            .alunos {
+                padding: 12px;
+            }
+
+            .alunos p {
+                font-size: 14px;
+            }
+
+            button {
+                min-height: 58px;
+                margin: 9px auto;
+                padding: 15px;
+                font-size: 17px;
+            }
+
+            #alternativas button {
+                min-height: 58px;
+                padding: 15px;
+            }
+
+        }
+
+        @media (max-width: 360px) {
+
+            .tela {
+                padding: 8px;
+            }
+
+            .cartao {
+                padding: 22px 14px;
+            }
+
+            h1 {
+                font-size: 27px;
+            }
+
+            h2 {
+                font-size: 21px;
+            }
+
+            .alunos p {
+                font-size: 13px;
+            }
+
+            button {
+                font-size: 16px;
+            }
+
+        }
+
+        @media (max-height: 500px) and (orientation: landscape) {
+
+            .tela {
+                align-items: flex-start;
+                padding-top: 15px;
+                padding-bottom: 15px;
+            }
+
+            .cartao {
+                padding: 20px;
+            }
+
+            h1 {
+                font-size: 28px;
+            }
+
+            h2 {
+                font-size: 21px;
+            }
+
+            button {
+                min-height: 48px;
+                padding: 10px;
+                margin: 7px auto;
+            }
+
+        }
+
+        @media (hover: none) {
+
+            button:hover {
+                transform: none;
+            }
+
+            button:active {
+                transform: scale(0.97);
+            }
+
+        }
+    </style>
 
 </head>
 
 <body>
 
-<section id="telaInicio" class="tela">
+    <section id="telaInicio" class="tela">
 
-    <div class="cartao">
+        <div class="cartao">
 
-        <h1>Jogo Educacional</h1>
+            <h1>Jogo Educacional</h1>
 
-        <p>Pré-Escola II</p>
+            <p>Pré-Escola II</p>
 
-        <p>Vamos aprender brincando!</p>
+            <p>Vamos aprender brincando!</p>
 
-        <div class="alunos">
+            <div class="alunos">
 
-            <h3>Alunos</h3>
+                <h3>Alunos</h3>
 
-            <p>Lucas Gabriel Maurici</p>
+                <p>Lucas Gabriel Maurici</p>
 
-            <p>Leandro dos Santos de Oliveira</p>
+                <p>Leandro dos Santos de Oliveira</p>
 
-            <p>Henrique Gabriel de Oliveira de Souza</p>
+                <p>Henrique Gabriel de Oliveira de Souza</p>
 
-            <p>Felipe Mafra Lazerini</p>
+                <p>Felipe Mafra Lazerini</p>
 
-        </div>
+            </div>
 
-        <button
-            class="jogar"
-            onclick="abrirNiveis()">
+            <button class="jogar" onclick="abrirNiveis()">
 
-            Jogar
+                Jogar
 
-        </button>
-
-    </div>
-
-</section>
-
-<section id="telaNiveis" class="tela escondido">
-
-    <div class="cartao">
-
-        <h1>Escolha o nível</h1>
-
-        <p>Escolha uma dificuldade para começar.</p>
-
-        <button
-            class="facil"
-            onclick="apresentarNivel('facil')">
-
-            Nível Fácil
-
-        </button>
-
-        <button
-            class="medio"
-            onclick="apresentarNivel('medio')">
-
-            Nível Médio
-
-        </button>
-
-        <button
-            class="dificil"
-            onclick="apresentarNivel('dificil')">
-
-            Nível Difícil
-
-        </button>
-
-        <button
-            class="voltar"
-            onclick="inicio()">
-
-            Voltar
-
-        </button>
-
-    </div>
-
-</section>
-
-<section id="telaNivel" class="tela escondido">
-
-    <div class="cartao">
-
-        <h1 id="tituloNivel">
-            Nível
-        </h1>
-
-        <p id="descricaoNivel">
-            Prepare-se!
-        </p>
-
-        <button
-            class="jogar"
-            onclick="comecarPerguntas()">
-
-            Começar
-
-        </button>
-
-        <button
-            class="voltar"
-            onclick="abrirNiveis()">
-
-            Voltar
-
-        </button>
-
-    </div>
-
-</section>
-
-<section id="telaPergunta" class="tela escondido">
-
-    <div class="cartao">
-
-        <p
-            id="numeroPergunta"
-            class="numero">
-        </p>
-
-        <h2 id="pergunta"></h2>
-
-        <div id="alternativas"></div>
-
-        <p id="feedback"></p>
-
-        <button
-            id="botaoProxima"
-            class="jogar escondido"
-            onclick="proximaPergunta()">
-
-            Próxima
-
-        </button>
-
-    </div>
-
-</section>
-
-<section id="telaResultado" class="tela escondido">
-
-    <div class="cartao">
-
-        <h1>Fim do jogo!</h1>
-
-        <p>Você terminou o desafio!</p>
-
-        <div
-            id="pontuacao"
-            class="pontuacao">
-
-            0
+            </button>
 
         </div>
 
-        <p
-            id="mensagem"
-            class="mensagem">
-        </p>
+    </section>
 
-        <button
-            class="jogar"
-            onclick="abrirNiveis()">
+    <section id="telaNiveis" class="tela escondido">
 
-            Jogar novamente
+        <div class="cartao">
 
-        </button>
+            <h1>Escolha o nível</h1>
 
-        <button
-            class="voltar"
-            onclick="inicio()">
+            <p>Escolha uma dificuldade para começar.</p>
 
-            Voltar ao início
+            <button class="facil" onclick="apresentarNivel('facil')">
 
-        </button>
+                Nível Fácil
 
-    </div>
+            </button>
 
-</section>
+            <button class="medio" onclick="apresentarNivel('medio')">
 
-<script>
+                Nível Médio
 
-let perguntas = [];
+            </button>
 
-let perguntaAtual = 0;
+            <button class="dificil" onclick="apresentarNivel('dificil')">
 
-let pontos = 0;
+                Nível Difícil
 
-let nivelEscolhido = "";
+            </button>
 
-let respondeu = false;
+            <button class="voltar" onclick="inicio()">
 
+                Voltar
 
-const facil = [
+            </button>
 
-    {
-        pergunta:
-        "Quantas maçãs há?\n\nMaçã – Maçã – Maçã – Maçã",
+        </div>
 
-        alternativas: [
-            "2",
-            "3",
-            "4",
-            "5"
-        ],
+    </section>
 
-        correta: 2
-    },
+    <section id="telaNivel" class="tela escondido">
 
-    {
-        pergunta:
-        "Qual objeto é MAIOR?",
+        <div class="cartao">
 
-        alternativas: [
-            "Formiga",
-            "Elefante",
-            "Rato",
-            "Joaninha"
-        ],
+            <h1 id="tituloNivel">
+                Nível
+            </h1>
 
-        correta: 1
-    },
+            <p id="descricaoNivel">
+                Prepare-se!
+            </p>
 
-    {
-        pergunta:
-        "O gato está embaixo da mesa. Onde está o gato?",
+            <button class="jogar" onclick="comecarPerguntas()">
 
-        alternativas: [
-            "Em cima",
-            "Embaixo",
-            "Dentro",
-            "Ao lado"
-        ],
+                Começar
 
-        correta: 1
-    },
+            </button>
 
-    {
-        pergunta:
-        "Qual desses objetos é VERMELHO?",
+            <button class="voltar" onclick="abrirNiveis()">
 
-        alternativas: [
-            "Objeto verde",
-            "Objeto azul",
-            "Objeto vermelho",
-            "Objeto amarelo"
-        ],
+                Voltar
 
-        correta: 2
-    },
+            </button>
 
-    {
-        pergunta:
-        "Quantos cachorros aparecem?\n\nCachorro – Cachorro – Cachorro – Cachorro – Cachorro",
+        </div>
 
-        alternativas: [
-            "3",
-            "4",
-            "5",
-            "6"
-        ],
-
-        correta: 2
-    },
-
-    {
-        pergunta:
-        "Onde o peixe normalmente vive?",
-
-        alternativas: [
-            "Na árvore",
-            "Na água",
-            "Na casa",
-            "No céu"
-        ],
-
-        correta: 1
-    },
-
-    {
-        pergunta:
-        "Qual animal pode viver em um ninho?",
-
-        alternativas: [
-            "Peixe",
-            "Pássaro",
-            "Elefante",
-            "Vaca"
-        ],
-
-        correta: 1
-    }
-
-];
-
-
-const medio = [
-
-    {
-        pergunta:
-        "Observe a girafa e o cachorro. Qual animal é mais alto?",
-
-        alternativas: [
-            "O cachorro",
-            "A girafa",
-            "Os dois têm o mesmo tamanho",
-            "Nenhum deles"
-        ],
-
-        correta: 1
-    },
-
-    {
-        pergunta:
-        "Qual é a primeira letra da palavra BOLA?",
-
-        alternativas: [
-            "A",
-            "B",
-            "O",
-            "L"
-        ],
-
-        correta: 1
-    },
-
-    {
-        pergunta:
-        "Qual palavra começa com a letra M?",
-
-        alternativas: [
-            "GATO",
-            "CACHORRO",
-            "MACACO",
-            "PEIXE"
-        ],
-
-        correta: 2
-    },
-
-    {
-        pergunta:
-        "Qual palavra começa com o mesmo som de SAPO?",
-
-        alternativas: [
-            "SUCO",
-            "CACHORRO",
-            "GATO",
-            "PEIXE"
-        ],
-
-        correta: 0
-    },
-
-    {
-        pergunta:
-        "Qual palavra começa com o mesmo som de BOLA?",
-
-        alternativas: [
-            "GATO",
-            "BORBOLETA",
-            "PEIXE",
-            "ELEFANTE"
-        ],
-
-        correta: 1
-    },
-
-    {
-        pergunta:
-        "Vamos separar a palavra BOLA: BO-LA.\n\nQuantas partes ou sílabas tem a palavra BOLA?",
-
-        alternativas: [
-            "1",
-            "2",
-            "3",
-            "4"
-        ],
-
-        correta: 1
-    },
-
-    {
-        pergunta:
-        "Bata palmas enquanto fala: CA-DEI-RA.\n\nQuantas sílabas tem a palavra CADEIRA?",
-
-        alternativas: [
-            "1",
-            "2",
-            "3",
-            "4"
-        ],
-
-        correta: 2
-    }
-
-];
-
-
-const dificil = [
-
-    {
-        pergunta:
-        "Qual figura é diferente das outras?",
-
-        alternativas: [
-            "Estrela",
-            "Estrela",
-            "Estrela",
-            "Coração"
-        ],
+    </section>
 
-        correta: 3
-    },
+    <section id="telaPergunta" class="tela escondido">
 
-    {
-        pergunta:
-        "Observe a sequência:\n\nVermelho – Azul – Vermelho – Azul – Vermelho – ?\n\nQual figura deve aparecer?",
+        <div class="cartao">
 
-        alternativas: [
-            "Vermelho",
-            "Azul",
-            "Verde",
-            "Amarelo"
-        ],
+            <p id="numeroPergunta" class="numero">
+            </p>
 
-        correta: 1
-    },
+            <h2 id="pergunta"></h2>
 
-    {
-        pergunta:
-        "O passarinho está dentro da gaiola. Onde está o passarinho?",
+            <div id="alternativas"></div>
 
-        alternativas: [
-            "Fora da gaiola",
-            "Em cima da gaiola",
-            "Dentro da gaiola",
-            "Atrás da gaiola"
-        ],
+            <p id="feedback"></p>
 
-        correta: 2
-    },
+            <button id="botaoProxima" class="jogar escondido" onclick="proximaPergunta()">
 
-    {
-        pergunta:
-        "Observe:\n\nMorango – Morango – Morango\nBanana – Banana\n\nQual fruta aparece em maior quantidade?",
+                Próxima
 
-        alternativas: [
-            "Morango",
-            "Banana",
-            "As duas aparecem na mesma quantidade",
-            "Nenhuma"
-        ],
+            </button>
 
-        correta: 0
-    },
+        </div>
 
-    {
-        pergunta:
-        "João foi ao parque e levou uma bola azul para brincar.\n\nO que João levou para o parque?",
+    </section>
 
-        alternativas: [
-            "Um carrinho",
-            "Uma bola",
-            "Um ursinho",
-            "Uma pipa"
-        ],
+    <section id="telaResultado" class="tela escondido">
 
-        correta: 1
-    },
+        <div class="cartao">
 
-    {
-        pergunta:
-        "Ana tem um gato branco. O gato gosta de brincar com uma bolinha vermelha.\n\nDe que cor é o gato?",
+            <h1>Fim do jogo!</h1>
 
-        alternativas: [
-            "Azul",
-            "Verde",
-            "Branco",
-            "Vermelho"
-        ],
+            <p>Você terminou o desafio!</p>
 
-        correta: 2
-    }
+            <div id="pontuacao" class="pontuacao">
 
-];
+                0
 
+            </div>
 
-function mostrarTela(id) {
+            <p id="mensagem" class="mensagem">
+            </p>
 
-    const telas =
-        document.querySelectorAll(".tela");
+            <button class="jogar" onclick="abrirNiveis()">
 
-    telas.forEach(function(tela) {
+                Jogar novamente
 
-        tela.classList.add("escondido");
+            </button>
 
-    });
+            <button class="voltar" onclick="inicio()">
 
-    document
-        .getElementById(id)
-        .classList.remove("escondido");
+                Voltar ao início
 
-}
+            </button>
 
+        </div>
 
-function inicio() {
+    </section>
 
-    mostrarTela("telaInicio");
+    <script>
 
-}
+        let perguntas = [];
 
+        let perguntaAtual = 0;
 
-function abrirNiveis() {
+        let pontos = 0;
 
-    mostrarTela("telaNiveis");
+        let nivelEscolhido = "";
 
-}
+        let respondeu = false;
 
 
-function apresentarNivel(nivel) {
+        const facil = [
 
-    nivelEscolhido = nivel;
+            {
+                pergunta:
+                    "Quantas maçãs há?\n\n🍎 – 🍎 – 🍎 – 🍎",
 
+                alternativas: [
+                    "2",
+                    "3",
+                    "4",
+                    "5"
+                ],
 
-    if (nivel === "facil") {
+                correta: 2
+            },
 
-        perguntas = facil;
+            {
+                pergunta:
+                    "Qual animal é MAIOR?",
 
-        document
-            .getElementById("tituloNivel")
-            .textContent =
-            "Nível Fácil";
+                alternativas: [
+                    "🐜 Formiga",
+                    "🐘 Elefante",
+                    "🐁 Rato",
+                    "🐞 Joaninha"
+                ],
 
-        document
-            .getElementById("descricaoNivel")
-            .textContent =
-            "Você terá 7 perguntas. Vamos começar?";
+                correta: 1
+            },
 
-    }
+            {
+                pergunta:
+                    "O gato está embaixo da mesa. Onde está o gato?  🐱",
 
+                alternativas: [
+                    "🌤️ Em cima",
+                    "🐾 Embaixo",
+                    "🏠 Dentro",
+                    "🧸 Ao lado"
+                ],
 
-    if (nivel === "medio") {
+                correta: 1
+            },
 
-        perguntas = medio;
+            {
+                pergunta: "🎨 Qual desses objetos é VERMELHO? ❤️",
 
-        document
-            .getElementById("tituloNivel")
-            .textContent =
-            "Nível Médio";
+                alternativas: [
+                    "🟢 Objeto verde",
+                    "🔵 Objeto azul",
+                    "🔴 Objeto vermelho",
+                    "🟡 Objeto amarelo"
+                ],
+                correta: 2
+            },
 
-        document
-            .getElementById("descricaoNivel")
-            .textContent =
-            "Você terá 7 perguntas. Prepare-se!";
+            {
+                pergunta:
+                    "🐶 Quantos cachorrinhos aparecem?\n\n🐶 – 🐶 – 🐶 – 🐶 – 🐶",
 
-    }
+                alternativas: [
+                    "🐶 3 cachorrinhos",
+                    "🐶 4 cachorrinhos",
+                    "🐶 5 cachorrinhos",
+                    "🐶 6 cachorrinhos"
+                ],
+                correta: 2
+            },
 
+            {
+                pergunta:
+                    "🐠 Onde o peixinho normalmente vive?",
 
-    if (nivel === "dificil") {
+                alternativas: [
+                    "🌳 Na árvore",
+                    "🌊 Na água",
+                    "🏠 Na casa",
+                    "☁️ No céu"
+                ],
+                correta: 1
+            },
 
-        perguntas = dificil;
+            {
+                pergunta:
+                    "🐦 Qual animal pode morar em um ninho? 🪺",
 
-        document
-            .getElementById("tituloNivel")
-            .textContent =
-            "Nível Difícil";
+                alternativas: [
+                    "🐟 Peixinho",
+                    "🐦 Passarinho",
+                    "🐘 Elefantinho",
+                    "🐮 Vaquinha"
+                ],
 
-        document
-            .getElementById("descricaoNivel")
-            .textContent =
-            "Você terá 6 perguntas. Boa sorte!";
+                correta: 1
+            }
 
-    }
+        ];
 
 
-    mostrarTela("telaNivel");
+        const medio = [
 
-}
+            {
+                pergunta:
+                    "🦒🐶 Observe a girafa e o cachorrinho. Qual animal é mais alto? 📏",
 
+                alternativas: [
+                    "🐶 O cachorrinho",
+                    "🦒 A girafa",
+                    "🐶🦒 Os dois têm o mesmo tamanho",
+                    "🤔 Nenhum deles"
+                ],
 
-function comecarPerguntas() {
+                correta: 1
+            },
 
-    perguntaAtual = 0;
+            {
+                pergunta:
+                    "⚽ Qual é a primeira letrinha da palavra BOLA? 🔤",
 
-    pontos = 0;
+                alternativas: [
+                    "🍎 A",
+                    "🎈 B",
+                    "🐻 O",
+                    "🦁 L"
+                ],
 
-    respondeu = false;
+                correta: 1
+            },
 
-    mostrarTela("telaPergunta");
+            {
+                pergunta:
+                    "🐵 Qual palavrinha começa com a letra M? 🔤",
 
-    mostrarPergunta();
+                alternativas: [
+                    "🐱 GATO",
+                    "🐶 CACHORRO",
+                    "🐒 MACACO",
+                    "🐠 PEIXE"
+                ],
 
-}
+                correta: 2
+            },
 
+            {
+                pergunta:
+                    "🐸 Qual palavrinha começa com o mesmo sonzinho de SAPO? 🔤",
 
-function mostrarPergunta() {
+                alternativas: [
+                    "🥤 SUCO",
+                    "🐶 CACHORRO",
+                    "🐱 GATO",
+                    "🐠 PEIXE"
+                ],
 
-    respondeu = false;
+                correta: 0
+            },
 
-    const pergunta =
-        perguntas[perguntaAtual];
+            {
+                pergunta:
+                    "⚽ Qual palavrinha começa com o mesmo sonzinho de BOLA? 🔤",
 
-    document
-        .getElementById("numeroPergunta")
-        .textContent =
-        "Pergunta " +
-        (perguntaAtual + 1) +
-        " de " +
-        perguntas.length;
+                alternativas: [
+                    "🐱 GATO",
+                    "🦋 BORBOLETA",
+                    "🐠 PEIXE",
+                    "🐘 ELEFANTE"
+                ],
 
-    document
-        .getElementById("pergunta")
-        .textContent =
-        pergunta.pergunta;
+                correta: 1
+            },
 
-    document
-        .getElementById("feedback")
-        .textContent =
-        "";
+            {
+                pergunta:
+                    "🎈 Vamos separar a palavra BOLA ⚽: BO - LA! 👏\n\n🧩 Quantas partes ou sílabas tem a palavra BOLA? 🤔",
 
-    document
-        .getElementById("botaoProxima")
-        .classList.add("escondido");
+                alternativas: [
+                    "1️⃣",
+                    "2️⃣",
+                    "3️⃣",
+                    "4️⃣"
+                ],
 
-    const area =
-        document.getElementById("alternativas");
+                correta: 1
+            },
 
-    area.innerHTML = "";
+            {
+                pergunta:
+                    "👏 Bata palmas enquanto fala: CA-DEI-RA! 🪑🎶\n\n🤔 Quantas sílabas tem a palavra CADEIRA?",
 
-    pergunta.alternativas.forEach(
-        function(texto, indice) {
+                alternativas: [
+                    "1️⃣",
+                    "2️⃣",
+                    "3️⃣",
+                    "4️⃣"
+                ],
 
-            const botao =
-                document.createElement("button");
+                correta: 2
+            }
 
-            botao.textContent =
-                String.fromCharCode(65 + indice) +
-                ") " +
-                texto;
+        ];
 
-            botao.onclick =
-                function() {
 
-                    responder(indice);
+        const dificil = [
 
-                };
+            {
+                pergunta:
+                    "🔍 Observe os emojis com atenção! ⭐⭐✨❤️\n\n🤔 Qual emoji é diferente dos outros?",
 
-            area.appendChild(botao);
+                alternativas: [
+                    "⭐ Estrela",
+                    "🌟 Estrela",
+                    "⭐ Estrela",
+                    "❤️ Coração"
+                ],
+
+                correta: 3
+            },
+
+
+            {
+                pergunta:
+                    "🎨 Observe a sequência de cores:\n\n🔴 Vermelho – 🔵 Azul – 🔴 Vermelho – 🔵 Azul – 🔴 Vermelho – ❓\n\n🤔 Qual cor deve aparecer agora?",
+
+                alternativas: [
+                    "🔴 Vermelho",
+                    "🔵 Azul",
+                    "🟢 Verde",
+                    "🟡 Amarelo"
+                ],
+
+                correta: 1
+            },
+
+            {
+                pergunta:
+                    "🐦 Observe com atenção! 🏠\n\nO passarinho está dentro da gaiola. 🐦🪺\n\n🤔 Onde está o passarinho?",
+
+                alternativas: [
+                    "🚪 Fora da gaiola",
+                    "⬆️ Em cima da gaiola",
+                    "🏠 Dentro da gaiola",
+                    "👀 Atrás da gaiola"
+                ],
+
+                correta: 2
+            },
+
+            {
+                pergunta:
+                    "🍓🍓🍓 Vamos contar as frutas! 🍌🍌\n\n🍓 Morango – Morango – Morango\n🍌 Banana – Banana\n\n🤔 Qual fruta aparece em maior quantidade?",
+
+                alternativas: [
+                    "🍓 Morango",
+                    "🍌 Banana",
+                    "⚖️ As duas aparecem na mesma quantidade",
+                    "❌ Nenhuma"
+                ],
+
+                correta: 0
+            },
+
+            {
+                pergunta:
+                    "🌳 João foi ao parque para brincar! 🛝\n\nEle levou uma bola azul. 🔵⚽\n\n🤔 O que João levou para o parque?",
+
+                alternativas: [
+                    "🚗 Um carrinho",
+                    "⚽ Uma bola",
+                    "🧸 Um ursinho",
+                    "🪁 Uma pipa"
+                ],
+
+                correta: 1
+            },
+
+            {
+                pergunta:
+                    "🐱 Ana tem um gatinho branco! 🤍\n\nO gatinho gosta de brincar com uma bolinha vermelha. 🔴🐾\n\n🤔 De que cor é o gato?",
+
+                alternativas: [
+                    "🔵 Azul",
+                    "🟢 Verde",
+                    "⚪ Branco",
+                    "🔴 Vermelho"
+                ],
+
+                correta: 2
+            }
+        ];
+
+
+
+        function mostrarTela(id) {
+
+            const telas =
+                document.querySelectorAll(".tela");
+
+            telas.forEach(function (tela) {
+
+                tela.classList.add("escondido");
+
+            });
+
+            document
+                .getElementById(id)
+                .classList.remove("escondido");
 
         }
-    );
-
-}
 
 
-function responder(indice) {
+        function inicio() {
 
-    if (respondeu) {
-        return;
-    }
+            mostrarTela("telaInicio");
 
-    respondeu = true;
-
-    const pergunta =
-        perguntas[perguntaAtual];
-
-    const botoes =
-        document.querySelectorAll(
-            "#alternativas button"
-        );
-
-    if (indice === pergunta.correta) {
-
-        pontos++;
-
-        botoes[indice]
-            .classList.add("correta");
-
-        document
-            .getElementById("feedback")
-            .textContent =
-            "Muito bem! Resposta correta!";
-
-    }
-
-    else {
-
-        botoes[indice]
-            .classList.add("errada");
-
-        botoes[pergunta.correta]
-            .classList.add("correta");
-
-        document
-            .getElementById("feedback")
-            .textContent =
-            "Quase! Veja a resposta correta.";
-
-    }
-
-    document
-        .getElementById("botaoProxima")
-        .classList.remove("escondido");
-
-}
+        }
 
 
-function proximaPergunta() {
+        function abrirNiveis() {
 
-    perguntaAtual++;
+            mostrarTela("telaNiveis");
 
-    if (perguntaAtual >= perguntas.length) {
-
-        mostrarResultado();
-
-    }
-
-    else {
-
-        mostrarPergunta();
-
-    }
-
-}
+        }
 
 
-function mostrarResultado() {
+        function apresentarNivel(nivel) {
 
-    mostrarTela("telaResultado");
-
-    document
-        .getElementById("pontuacao")
-        .textContent =
-        pontos +
-        " / " +
-        perguntas.length;
-
-    let mensagem;
-
-    if (pontos === perguntas.length) {
-
-        mensagem =
-            "Parabéns! Você acertou todas!";
-
-    }
-
-    else if (pontos >= perguntas.length / 2) {
-
-        mensagem =
-            "Muito bem! Você foi muito bem!";
-
-    }
-
-    else {
-
-        mensagem =
-            "Bom trabalho! Continue aprendendo!";
-
-    }
-
-    document
-        .getElementById("mensagem")
-        .textContent =
-        mensagem;
-
-}
+            nivelEscolhido = nivel;
 
 
-inicio();
+            if (nivel === "facil") {
 
-</script>
+                perguntas = facil;
+
+                document
+                    .getElementById("tituloNivel")
+                    .textContent =
+                    "Nível Fácil";
+
+                document
+                    .getElementById("descricaoNivel")
+                    .textContent =
+                    "Você terá 7 perguntas. Vamos começar?";
+
+            }
+
+
+            if (nivel === "medio") {
+
+                perguntas = medio;
+
+                document
+                    .getElementById("tituloNivel")
+                    .textContent =
+                    "Nível Médio";
+
+                document
+                    .getElementById("descricaoNivel")
+                    .textContent =
+                    "Você terá 7 perguntas. Prepare-se!";
+
+            }
+
+
+            if (nivel === "dificil") {
+
+                perguntas = dificil;
+
+                document
+                    .getElementById("tituloNivel")
+                    .textContent =
+                    "Nível Difícil";
+
+                document
+                    .getElementById("descricaoNivel")
+                    .textContent =
+                    "Você terá 6 perguntas. Boa sorte!";
+
+            }
+
+
+            mostrarTela("telaNivel");
+
+        }
+
+
+        function comecarPerguntas() {
+
+            perguntaAtual = 0;
+
+            pontos = 0;
+
+            respondeu = false;
+
+            mostrarTela("telaPergunta");
+
+            mostrarPergunta();
+
+        }
+
+
+        function mostrarPergunta() {
+
+            respondeu = false;
+
+            const pergunta =
+                perguntas[perguntaAtual];
+
+            document
+                .getElementById("numeroPergunta")
+                .textContent =
+                "Pergunta " +
+                (perguntaAtual + 1) +
+                " de " +
+                perguntas.length;
+
+            document
+                .getElementById("pergunta")
+                .textContent =
+                pergunta.pergunta;
+
+            document
+                .getElementById("feedback")
+                .textContent =
+                "";
+
+            document
+                .getElementById("botaoProxima")
+                .classList.add("escondido");
+
+            const area =
+                document.getElementById("alternativas");
+
+            area.innerHTML = "";
+
+            pergunta.alternativas.forEach(
+                function (texto, indice) {
+
+                    const botao =
+                        document.createElement("button");
+
+                    botao.textContent =
+                        String.fromCharCode(65 + indice) +
+                        ") " +
+                        texto;
+
+                    botao.onclick =
+                        function () {
+
+                            responder(indice);
+
+                        };
+
+                    area.appendChild(botao);
+
+                }
+            );
+
+        }
+
+
+        function responder(indice) {
+
+            if (respondeu) {
+                return;
+            }
+
+            respondeu = true;
+
+            const pergunta =
+                perguntas[perguntaAtual];
+
+            const botoes =
+                document.querySelectorAll(
+                    "#alternativas button"
+                );
+
+            if (indice === pergunta.correta) {
+
+                pontos++;
+
+                botoes[indice]
+                    .classList.add("correta");
+
+                document
+                    .getElementById("feedback")
+                    .textContent =
+                    "Muito bem! Resposta correta!";
+
+            }
+
+            else {
+
+                botoes[indice]
+                    .classList.add("errada");
+
+                botoes[pergunta.correta]
+                    .classList.add("correta");
+
+                document
+                    .getElementById("feedback")
+                    .textContent =
+                    "Quase! Veja a resposta correta.";
+
+            }
+
+            document
+                .getElementById("botaoProxima")
+                .classList.remove("escondido");
+
+        }
+
+
+        function proximaPergunta() {
+
+            perguntaAtual++;
+
+            if (perguntaAtual >= perguntas.length) {
+
+                mostrarResultado();
+
+            }
+
+            else {
+
+                mostrarPergunta();
+
+            }
+
+        }
+
+
+        function mostrarResultado() {
+
+            mostrarTela("telaResultado");
+
+            document
+                .getElementById("pontuacao")
+                .textContent =
+                pontos +
+                " / " +
+                perguntas.length;
+
+            let mensagem;
+
+            if (pontos === perguntas.length) {
+
+                mensagem =
+                    "Parabéns! Você acertou todas!";
+
+            }
+
+            else if (pontos >= perguntas.length / 2) {
+
+                mensagem =
+                    "Muito bem! Você foi muito bem!";
+
+            }
+
+            else {
+
+                mensagem =
+                    "Bom trabalho! Continue aprendendo!";
+
+            }
+
+            document
+                .getElementById("mensagem")
+                .textContent =
+                mensagem;
+
+        }
+
+
+        inicio();
+
+    </script>
 
 </body>
 
 </html>
-
